@@ -78,7 +78,6 @@ export default function App() {
         }}
         showsVerticalScrollIndicator={false}
         contentContainerClassName=" pb-28 px-5"
-
         // this is for the header component
         // ListHeaderComponent={() => (
         //   <View className="flex-between flex-row w-full my-5">
@@ -96,6 +95,17 @@ export default function App() {
 
         // {/* <CartBtn/> */}
         //   </View>
+        // )}
+
+        // ListFooterComponent={() => (
+        //   <>
+        //     <Button
+        //       title="Try!"
+        //       onPress={() => {
+        //         Sentry.captureException(new Error("First error"));
+        //       }}
+        //     />
+        //   </>
         // )}
       />
     </SafeAreaView>
