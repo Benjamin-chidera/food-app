@@ -1,4 +1,4 @@
-import { CreateUserPrams, SignInParams } from "@/type";
+import { CreateUserPrams, GetMenuParams, SignInParams } from "@/type";
 import {
   Account,
   Avatars,
@@ -14,12 +14,12 @@ export const appwriteConfig = {
   projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
   platform: "com.discover_benix.food-app",
   databaseId: "68695068003ac0dbdf23",
-  bucketId: "68643e170015edaa95d7",
+  bucketId: "686a5103001bbaee84f7",
   userCollectionId: "6869509a0036e285aadf",
-  categoriesCollectionId: "68643a390017b239fa0f",
-  menuCollectionId: "68643ad80027ddb96920",
-  customizationsCollectionId: "68643c0300297e5abc95",
-  menuCustomizationsCollectionId: "68643cd8003580ecdd8f",
+  categoriesCollectionId: "686a4ca800380e1c34dd",
+  menuCollectionId: "686a4ddf000c9e716003",
+  customizationsCollectionId: "686a4f4c002dc3d8050b",
+  menuCustomizationsCollectionId: "686a50090034a1f2c6d8",
 };
 
 export const client = new Client();
@@ -85,6 +85,38 @@ export const getCurrentUser = async () => {
     return currentUser.documents[0];
   } catch (e) {
     console.log(e);
+    throw new Error(e as string);
+  }
+};
+
+export const getMenu = async ({ category, query }: GetMenuParams) => {
+  try {
+    const queries: string[] = [];
+
+    if (category) queries.push(Query.equal("categories", category));
+    if (query) queries.push(Query.search("name", query));
+
+    const menus = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.menuCollectionId,
+      queries
+    );
+
+    return menus.documents;
+  } catch (e) {
+    throw new Error(e as string);
+  }
+};
+
+export const getCategories = async () => {
+  try {
+    const categories = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.categoriesCollectionId
+    );
+
+    return categories.documents;
+  } catch (e) {
     throw new Error(e as string);
   }
 };
